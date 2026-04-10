@@ -25,7 +25,7 @@
     padding: 1rem;
     max-width: 640px;
     margin: 0 auto;
-    padding-bottom: 7rem;
+    padding-bottom: 4rem;
     -webkit-font-smoothing: antialiased;
   }
   h1, h2, h3 { font-weight: 700; }
@@ -56,6 +56,18 @@
     margin-top: 0.3rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
+  }
+  .header .phase-indicator {
+    display: inline-block;
+    background: var(--accent-dim);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.25rem 0.7rem;
+    border-radius: 20px;
+    margin-top: 0.6rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
   }
 
   .phase {
@@ -95,47 +107,7 @@
     opacity: 0.6;
   }
 
-  nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(10, 10, 10, 0.96);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-top: 1px solid var(--border);
-    padding: 0.7rem 0.6rem;
-    display: flex;
-    gap: 0.35rem;
-    justify-content: center;
-    overflow-x: auto;
-    z-index: 10;
-  }
-  nav button {
-    background: var(--card);
-    color: var(--fg);
-    border: 1px solid var(--border);
-    padding: 0.55rem 0.75rem;
-    border-radius: 6px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    cursor: pointer;
-    white-space: nowrap;
-    font-family: inherit;
-    transition: all 0.15s;
-    flex-shrink: 0;
-  }
-  nav button:hover {
-    border-color: var(--accent-dim);
-  }
-  nav button.active {
-    background: var(--accent);
-    color: #fff;
-    border-color: var(--accent);
-  }
-
   .hidden { display: none; }
-
   .shield { color: var(--shield); }
 
   hr {
@@ -144,8 +116,125 @@
     margin: 0.8rem 0;
   }
 
+  /* Admin floating button */
+  #admin-toggle {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #222;
+    border: 1px solid #444;
+    color: #888;
+    font-size: 1.2rem;
+    cursor: pointer;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+  #admin-toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Admin panel */
+  #admin-panel {
+    position: fixed;
+    bottom: 4rem;
+    right: 1rem;
+    background: #1a1a1a;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem;
+    z-index: 20;
+    width: 220px;
+  }
+  #admin-panel h3 {
+    font-size: 0.85rem;
+    color: var(--accent);
+    margin: 0 0 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  #admin-panel .phase-btns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.4rem;
+    margin-bottom: 0.6rem;
+  }
+  #admin-panel button {
+    background: var(--card);
+    color: var(--fg);
+    border: 1px solid var(--border);
+    padding: 0.5rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  #admin-panel button.active-phase {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+  #admin-panel button:hover { border-color: var(--accent-dim); }
+  #admin-panel .status {
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  /* PIN dialog */
+  #pin-dialog {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 30;
+  }
+  #pin-dialog .pin-box {
+    background: #1a1a1a;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+    width: 260px;
+  }
+  #pin-dialog input {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--fg);
+    padding: 0.6rem;
+    border-radius: 6px;
+    font-size: 1.2rem;
+    text-align: center;
+    width: 100%;
+    margin: 0.8rem 0;
+    font-family: inherit;
+    letter-spacing: 0.3em;
+  }
+  #pin-dialog button {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+  }
+  #pin-dialog .pin-error {
+    color: var(--accent);
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+  }
+
   @media print {
-    nav { display: none; }
+    #admin-toggle, #admin-panel, #pin-dialog { display: none !important; }
     body { padding-bottom: 1rem; max-width: 100%; color: #000; background: #fff; }
     .phase { background: #fff; border: 1px solid #ccc; break-inside: avoid; }
     .phase-badge { background: #000; }
@@ -158,6 +247,7 @@
 <header class="header">
   <h1>🎭 TRAITORS BIRTHDAY</h1>
   <div class="subtitle">Player Handbook</div>
+  <div class="phase-indicator" id="phase-label">Phase 1 · Welcome</div>
 </header>
 
 <!-- ============================= PHASE 1 ============================= -->
@@ -329,89 +419,189 @@
 <!-- Locked placeholders -->
 <div class="locked" data-locked-phase="2">
   <span class="lock-icon">🔒</span>
-  Phase 2 locked. The host will reveal it at the first Roundtable.
+  More rules will be revealed by the host.
 </div>
 <div class="locked" data-locked-phase="3">
   <span class="lock-icon">🔒</span>
-  Phase 3 locked. Unlocks after the first banishment.
+  More rules will be revealed by the host.
 </div>
 <div class="locked" data-locked-phase="4">
   <span class="lock-icon">🔒</span>
-  Phase 4 locked. Unlocks at the Movie Challenge.
+  More rules will be revealed by the host.
 </div>
 <div class="locked" data-locked-phase="5">
   <span class="lock-icon">🔒</span>
-  Phase 5 locked. Unlocks at the Color Box game.
+  More rules will be revealed by the host.
 </div>
 <div class="locked" data-locked-phase="6">
   <span class="lock-icon">🔒</span>
-  Phase 6 locked. Unlocks at the Final Roundtable.
+  More rules will be revealed by the host.
 </div>
 
-<nav>
-  <button data-phase="1">Phase 1</button>
-  <button data-phase="2">Phase 2</button>
-  <button data-phase="3">Phase 3</button>
-  <button data-phase="4">Phase 4</button>
-  <button data-phase="5">Phase 5</button>
-  <button data-phase="6">Phase 6</button>
-</nav>
+<!-- Admin toggle button (small lock icon, bottom-right) -->
+<button id="admin-toggle" class="hidden">🔐</button>
+
+<!-- Admin panel (hidden until authenticated) -->
+<div id="admin-panel" class="hidden">
+  <h3>Admin — Set Phase</h3>
+  <div class="phase-btns">
+    <button onclick="setPhase(1)">1</button>
+    <button onclick="setPhase(2)">2</button>
+    <button onclick="setPhase(3)">3</button>
+    <button onclick="setPhase(4)">4</button>
+    <button onclick="setPhase(5)">5</button>
+    <button onclick="setPhase(6)">6</button>
+  </div>
+  <div class="status" id="admin-status">Connected</div>
+</div>
+
+<!-- PIN dialog (shown on admin toggle click) -->
+<div id="pin-dialog" class="hidden">
+  <div class="pin-box">
+    <h3>Admin Access</h3>
+    <input type="password" id="pin-input" placeholder="PIN" maxlength="10" inputmode="numeric">
+    <br>
+    <button onclick="checkPin()">Enter</button>
+    <div class="pin-error hidden" id="pin-error">Wrong PIN</div>
+  </div>
+</div>
 
 <script>
+  // ========== CONFIGURATION ==========
+  // Replace this URL with your Val Town HTTP endpoint after deploying val.ts
+  const VAL_URL = 'https://sanfordleach_ed09fbc4--f83491d6349311f1a60742b51c65c3df.web.val.run';
+  const ADMIN_PIN = '7331';
+  const POLL_INTERVAL = 3000; // 3 seconds
+
+  // ========== STATE ==========
   const MAX_PHASE = 6;
+  const PHASE_NAMES = {
+    1: 'Phase 1 · Welcome',
+    2: 'Phase 2 · Roundtable',
+    3: 'Phase 3 · Ghosts',
+    4: 'Phase 4 · Movie Challenge',
+    5: 'Phase 5 · Color Box',
+    6: 'Phase 6 · Endgame'
+  };
+  let currentPhase = 1;
+  let isAdmin = false;
 
-  function clamp(n) {
-    const x = parseInt(n, 10);
-    if (isNaN(x)) return 1;
-    return Math.max(1, Math.min(MAX_PHASE, x));
-  }
-
+  // ========== DISPLAY ==========
   function showPhase(n) {
-    n = clamp(n);
+    n = Math.max(1, Math.min(MAX_PHASE, parseInt(n, 10) || 1));
+    currentPhase = n;
 
-    // Show phases 1..n, hide n+1..6
     document.querySelectorAll('.phase').forEach(el => {
       const p = parseInt(el.dataset.phase, 10);
       el.classList.toggle('hidden', p > n);
     });
 
-    // Show locked placeholders for (n+1)..6
     document.querySelectorAll('.locked').forEach(el => {
       const p = parseInt(el.dataset.lockedPhase, 10);
       el.classList.toggle('hidden', p <= n);
     });
 
-    // Update nav button state
-    document.querySelectorAll('nav button').forEach(btn => {
-      const p = parseInt(btn.dataset.phase, 10);
-      btn.classList.toggle('active', p === n);
+    document.getElementById('phase-label').textContent = PHASE_NAMES[n] || `Phase ${n}`;
+
+    // Update admin buttons
+    document.querySelectorAll('#admin-panel .phase-btns button').forEach(btn => {
+      const p = parseInt(btn.textContent, 10);
+      btn.classList.toggle('active-phase', p === n);
     });
+  }
 
-    // Persist state
-    const url = new URL(location.href);
-    url.searchParams.set('phase', n);
-    history.replaceState({}, '', url);
-    try { localStorage.setItem('traitors-phase', n); } catch (e) {}
-
-    // Scroll to top of newly revealed phase
-    const target = document.querySelector(`.phase[data-phase="${n}"]`);
-    if (target && n > 1) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+  // ========== VAL TOWN POLLING ==========
+  async function fetchPhase() {
+    if (VAL_URL.includes('%%')) return; // Not configured yet
+    try {
+      const res = await fetch(VAL_URL);
+      const data = await res.json();
+      if (data.phase !== currentPhase) {
+        showPhase(data.phase);
+        // Scroll to newest phase
+        const target = document.querySelector(`.phase[data-phase="${data.phase}"]`);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    } catch (e) {
+      console.warn('Phase fetch failed:', e);
     }
   }
 
-  document.querySelectorAll('nav button').forEach(btn => {
-    btn.addEventListener('click', () => showPhase(btn.dataset.phase));
+  async function setPhase(n) {
+    if (VAL_URL.includes('%%')) {
+      // Fallback: local-only mode (no val configured)
+      showPhase(n);
+      return;
+    }
+    const status = document.getElementById('admin-status');
+    status.textContent = 'Updating...';
+    try {
+      const res = await fetch(VAL_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pin: ADMIN_PIN, phase: n })
+      });
+      const data = await res.json();
+      if (data.phase) {
+        showPhase(data.phase);
+        status.textContent = `Phase ${data.phase} set ✓`;
+      } else {
+        status.textContent = data.error || 'Error';
+      }
+    } catch (e) {
+      status.textContent = 'Network error';
+      // Fallback to local
+      showPhase(n);
+    }
+  }
+
+  // ========== ADMIN AUTH ==========
+  function checkPin() {
+    const input = document.getElementById('pin-input');
+    if (input.value === ADMIN_PIN) {
+      isAdmin = true;
+      document.getElementById('pin-dialog').classList.add('hidden');
+      document.getElementById('admin-panel').classList.remove('hidden');
+      document.getElementById('admin-toggle').textContent = '🔓';
+      input.value = '';
+    } else {
+      document.getElementById('pin-error').classList.remove('hidden');
+      input.value = '';
+      setTimeout(() => document.getElementById('pin-error').classList.add('hidden'), 2000);
+    }
+  }
+
+  document.getElementById('pin-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') checkPin();
   });
 
-  // Initial phase: URL param > localStorage > 1
-  const urlPhase = new URLSearchParams(location.search).get('phase');
-  let stored = null;
-  try { stored = localStorage.getItem('traitors-phase'); } catch (e) {}
-  const initial = urlPhase || stored || '1';
-  showPhase(initial);
+  // Show admin toggle if ?admin is in URL or triple-tap bottom-right
+  const showAdminToggle = new URLSearchParams(location.search).has('admin');
+  if (showAdminToggle) {
+    document.getElementById('admin-toggle').classList.remove('hidden');
+  }
+
+  document.getElementById('admin-toggle').addEventListener('click', () => {
+    if (isAdmin) {
+      // Toggle panel visibility
+      document.getElementById('admin-panel').classList.toggle('hidden');
+    } else {
+      document.getElementById('pin-dialog').classList.remove('hidden');
+      document.getElementById('pin-input').focus();
+    }
+  });
+
+  // Close PIN dialog on background click
+  document.getElementById('pin-dialog').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) {
+      e.currentTarget.classList.add('hidden');
+    }
+  });
+
+  // ========== INIT ==========
+  showPhase(1);
+  fetchPhase();
+  setInterval(fetchPhase, POLL_INTERVAL);
 </script>
 
 </body>
