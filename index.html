@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Traitors Birthday — Player Handbook</title>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --fg: #e8e8e8;
+    --accent: #b91c1c;
+    --accent-dim: #7f1d1d;
+    --muted: #888;
+    --border: #2a2a2a;
+    --card: #141414;
+    --shield: #d4af37;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    line-height: 1.6;
+    padding: 1rem;
+    max-width: 640px;
+    margin: 0 auto;
+    padding-bottom: 7rem;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 { font-weight: 700; }
+  h1 { font-size: 1.55rem; color: var(--accent); margin-bottom: 0.4rem; }
+  h2 { font-size: 1.25rem; margin-top: 1.2rem; margin-bottom: 0.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.3rem; }
+  h3 { font-size: 1.05rem; margin-top: 1rem; margin-bottom: 0.4rem; color: #f5f5f5; }
+  p { margin-bottom: 0.8rem; }
+  ul, ol { padding-left: 1.4rem; margin-bottom: 0.8rem; }
+  li { margin-bottom: 0.35rem; }
+  strong { color: #fff; font-weight: 600; }
+  em { color: var(--muted); }
+
+  .header {
+    text-align: center;
+    padding: 1rem 0 1.5rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1.2rem;
+  }
+  .header h1 {
+    font-size: 1.9rem;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+    margin: 0;
+  }
+  .header .subtitle {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .phase {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem 1.3rem;
+    margin-bottom: 1rem;
+  }
+  .phase-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 0.25rem 0.7rem;
+    border-radius: 4px;
+    margin-bottom: 0.6rem;
+    text-transform: uppercase;
+  }
+
+  .locked {
+    background: transparent;
+    border: 1px dashed #333;
+    color: #555;
+    text-align: center;
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+  }
+  .locked .lock-icon {
+    font-size: 1.3rem;
+    display: block;
+    margin-bottom: 0.3rem;
+    opacity: 0.6;
+  }
+
+  nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(10, 10, 10, 0.96);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid var(--border);
+    padding: 0.7rem 0.6rem;
+    display: flex;
+    gap: 0.35rem;
+    justify-content: center;
+    overflow-x: auto;
+    z-index: 10;
+  }
+  nav button {
+    background: var(--card);
+    color: var(--fg);
+    border: 1px solid var(--border);
+    padding: 0.55rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: inherit;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+  nav button:hover {
+    border-color: var(--accent-dim);
+  }
+  nav button.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+
+  .hidden { display: none; }
+
+  .shield { color: var(--shield); }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0.8rem 0;
+  }
+
+  @media print {
+    nav { display: none; }
+    body { padding-bottom: 1rem; max-width: 100%; color: #000; background: #fff; }
+    .phase { background: #fff; border: 1px solid #ccc; break-inside: avoid; }
+    .phase-badge { background: #000; }
+    h1, h2, h3 { color: #000; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <h1>🎭 TRAITORS BIRTHDAY</h1>
+  <div class="subtitle">Player Handbook</div>
+</header>
+
+<!-- ============================= PHASE 1 ============================= -->
+<section class="phase" data-phase="1">
+  <span class="phase-badge">Phase 1 · Welcome</span>
+
+  <h2>The Game</h2>
+  <p>You've been invited to a secret game. Some of you are <strong>Faithful</strong>. A few of you are <strong>Traitors</strong>. You'll play 3 games and hold Roundtables between them. Each night, the Traitors secretly murder one Faithful. At each Roundtable, the group votes to banish someone they suspect.</p>
+
+  <h3>Win Conditions</h3>
+  <ul>
+    <li><strong>Faithful win</strong> if all Traitors are banished.</li>
+    <li><strong>Traitors win</strong> if any Traitor survives to the end.</li>
+  </ul>
+
+  <h2><span class="shield">🛡️</span> Labubus Are Shields</h2>
+  <ul>
+    <li>Winning a game earns you a <strong>Labubu shield</strong>.</li>
+    <li>Hold the Labubu to block ONE murder attempt — then it's gone.</li>
+    <li>One shield per game, per player.</li>
+    <li>Shields do <strong>NOT</strong> block roundtable banishment. You can still be voted out.</li>
+    <li>Team shields (Movie Challenge, Color Box) protect the <strong>whole winning team</strong> from the next murder phase.</li>
+  </ul>
+
+  <h2>💎 Game 1 — Hidden Diamonds</h2>
+  <p>Five minutes. Find plastic diamonds hidden around the clubhouse.</p>
+  <ul>
+    <li><strong>One diamond per hand</strong> — max 2 at a time.</li>
+    <li>Stack them on <strong>your named coffin card</strong>.</li>
+    <li>You must return to your coffin before grabbing more.</li>
+    <li>Most diamonds wins a Labubu shield <span class="shield">🛡️</span>.</li>
+  </ul>
+
+  <h2>📜 Rules of Engagement</h2>
+  <ul>
+    <li>Lie, bluff, mislead — this is a social deception game. That's the point.</li>
+    <li>You may <strong>NOT</strong> show your role card to anyone, ever.</li>
+    <li>You may <strong>NOT</strong> take photos of role cards.</li>
+    <li>Respect the ceremonies (close your eyes when told, no peeking).</li>
+    <li>Have fun. It's a game. No one is actually mad at you for winning.</li>
+  </ul>
+</section>
+
+<!-- ============================= PHASE 2 ============================= -->
+<section class="phase" data-phase="2">
+  <span class="phase-badge">Phase 2 · Roundtable</span>
+
+  <h2>⚖️ How a Roundtable Works</h2>
+  <ol>
+    <li><strong>Discussion</strong> (~8 min): everyone sits at the roundtable. Accuse, defend, ask questions, build alliances. Be loud, be quiet, be sneaky — your call.</li>
+    <li><strong>Vote</strong>: the host calls for a vote. On the count of 3, everyone points simultaneously at the person they want to banish.</li>
+    <li><strong>Reveal</strong>: majority is banished. The host reveals their role card dramatically.</li>
+    <li>Banished player becomes a <strong>Ghost</strong>.</li>
+  </ol>
+
+  <h3>Voting Rules</h3>
+  <ul>
+    <li>Simultaneous pointing — no abstaining, no changing your mind after the 3-count.</li>
+    <li>Ties → host picks a tiebreaker on the spot (coin flip, revote between tied players, etc.).</li>
+    <li>You can vote for yourself. We don't recommend it.</li>
+  </ul>
+</section>
+
+<!-- ============================= PHASE 3 ============================= -->
+<section class="phase" data-phase="3">
+  <span class="phase-badge">Phase 3 · Ghosts</span>
+
+  <h2>👻 You're Dead. Here's What You Can Do.</h2>
+
+  <h3>1. The Ghost Vote</h3>
+  <ul>
+    <li>Each roundtable, ghosts meet privately and agree on ONE player to collectively vote for.</li>
+    <li>The host announces <em>"The ghosts have cast their vote — they chose ___"</em> before the living vote.</li>
+    <li>The ghost vote doesn't auto-banish anyone, but it heavily influences the living. Use it as propaganda.</li>
+  </ul>
+
+  <h3>2. Return to Life</h3>
+  <ul>
+    <li>Ghosts can still play the 3 games.</li>
+    <li>If a Ghost is on a winning team, that ghost may <strong>swap places with a chosen living player</strong> — ghost comes back to life, living player becomes a ghost.</li>
+    <li>Your role stays the same as it was when you died.</li>
+  </ul>
+
+  <h3>3. Shield Nullification</h3>
+  <ul>
+    <li>If a ghost returns to life by targeting a shielded player, <strong>the shield is consumed</strong> and the swap still happens.</li>
+  </ul>
+
+  <h3>Ghost Etiquette</h3>
+  <ul>
+    <li>No talking to living players about the game during roundtables (hang out and drink, though).</li>
+    <li>No revealing who murdered whom — you're dead, you don't know.</li>
+    <li>Your role card is still secret.</li>
+  </ul>
+</section>
+
+<!-- ============================= PHASE 4 ============================= -->
+<section class="phase" data-phase="4">
+  <span class="phase-badge">Phase 4 · Movie Challenge</span>
+
+  <h2>🎬 Game 2 — Movie Challenge</h2>
+  <p>10–15 minutes. Three teams of ~3, each team split into <strong>Actors</strong> and <strong>Guessers</strong> in separate rooms.</p>
+
+  <h3>How to Play</h3>
+  <ul>
+    <li><strong>Actors</strong> pick a movie from their poster board.</li>
+    <li>Act it out in <strong>ONE photo</strong> and send it to your Guessers.</li>
+    <li><strong>Guessers</strong> walk around and grab the matching title strip taped to the wall.</li>
+    <li>Bring the strip back as proof. Actors send the next movie photo once the previous is guessed.</li>
+  </ul>
+
+  <h3>Scoring</h3>
+  <ul>
+    <li>1 point per correct guess.</li>
+    <li>Once a movie is guessed correctly by ANY team, it's <strong>locked out</strong> for everyone.</li>
+    <li>No two teams can act out the same movie — first come first served.</li>
+  </ul>
+
+  <h3>Prize</h3>
+  <p><span class="shield">🛡️</span> <strong>Team Shield</strong> — the whole winning team is protected from the next murder. Team members can still be banished by roundtable vote.</p>
+</section>
+
+<!-- ============================= PHASE 5 ============================= -->
+<section class="phase" data-phase="5">
+  <span class="phase-badge">Phase 5 · Color Box</span>
+
+  <h2>🎨 Game 3 — Color Box (Mastermind)</h2>
+  <p>Six secret colors in a hidden order inside the box. Crack the code.</p>
+
+  <h3>How to Play</h3>
+  <ul>
+    <li>Three teams take turns.</li>
+    <li>On each turn: arrange the 6 colors on top of the box in your guessed order → say "LOCK IN".</li>
+    <li>The host announces <strong>"X correct positions"</strong> — only exact-spot matches count.</li>
+    <li>Next team's turn. Keep cycling until one team cracks all 6, or ~2:30 per team rotation elapses.</li>
+  </ul>
+
+  <h3>How to Win</h3>
+  <ul>
+    <li>First team to lock in all 6 colors correctly wins.</li>
+    <li>Time out? Closest guess (highest X) wins — tiebreaker by who achieved it first.</li>
+  </ul>
+
+  <h3>Prize</h3>
+  <p><span class="shield">🛡️</span> <strong>Team Shield</strong> — same as Movie Challenge (whole team protected from next murder, still banishable).</p>
+</section>
+
+<!-- ============================= PHASE 6 ============================= -->
+<section class="phase" data-phase="6">
+  <span class="phase-badge">Phase 6 · Endgame</span>
+
+  <h2>⚖️ Final Roundtable</h2>
+  <ul>
+    <li><strong>Minimum ONE banishment</strong> is required.</li>
+    <li>After each banishment, the host asks: <em>"Keep going or stop?"</em> Majority decides.</li>
+    <li>When the group votes to stop (or only 2 players remain), win conditions are checked.</li>
+  </ul>
+
+  <h2>🏆 Win Conditions</h2>
+  <ul>
+    <li><strong>Faithful win</strong> if all Traitors are banished.</li>
+    <li><strong>Traitors win</strong> if any Traitor survives to the end.</li>
+  </ul>
+
+  <h2>🎭 Thank you for playing</h2>
+  <p><em>The traitors walked among you. Some were caught. Some slipped away. Either way — trust was the real game.</em></p>
+</section>
+
+<!-- Locked placeholders -->
+<div class="locked" data-locked-phase="2">
+  <span class="lock-icon">🔒</span>
+  Phase 2 locked. The host will reveal it at the first Roundtable.
+</div>
+<div class="locked" data-locked-phase="3">
+  <span class="lock-icon">🔒</span>
+  Phase 3 locked. Unlocks after the first banishment.
+</div>
+<div class="locked" data-locked-phase="4">
+  <span class="lock-icon">🔒</span>
+  Phase 4 locked. Unlocks at the Movie Challenge.
+</div>
+<div class="locked" data-locked-phase="5">
+  <span class="lock-icon">🔒</span>
+  Phase 5 locked. Unlocks at the Color Box game.
+</div>
+<div class="locked" data-locked-phase="6">
+  <span class="lock-icon">🔒</span>
+  Phase 6 locked. Unlocks at the Final Roundtable.
+</div>
+
+<nav>
+  <button data-phase="1">Phase 1</button>
+  <button data-phase="2">Phase 2</button>
+  <button data-phase="3">Phase 3</button>
+  <button data-phase="4">Phase 4</button>
+  <button data-phase="5">Phase 5</button>
+  <button data-phase="6">Phase 6</button>
+</nav>
+
+<script>
+  const MAX_PHASE = 6;
+
+  function clamp(n) {
+    const x = parseInt(n, 10);
+    if (isNaN(x)) return 1;
+    return Math.max(1, Math.min(MAX_PHASE, x));
+  }
+
+  function showPhase(n) {
+    n = clamp(n);
+
+    // Show phases 1..n, hide n+1..6
+    document.querySelectorAll('.phase').forEach(el => {
+      const p = parseInt(el.dataset.phase, 10);
+      el.classList.toggle('hidden', p > n);
+    });
+
+    // Show locked placeholders for (n+1)..6
+    document.querySelectorAll('.locked').forEach(el => {
+      const p = parseInt(el.dataset.lockedPhase, 10);
+      el.classList.toggle('hidden', p <= n);
+    });
+
+    // Update nav button state
+    document.querySelectorAll('nav button').forEach(btn => {
+      const p = parseInt(btn.dataset.phase, 10);
+      btn.classList.toggle('active', p === n);
+    });
+
+    // Persist state
+    const url = new URL(location.href);
+    url.searchParams.set('phase', n);
+    history.replaceState({}, '', url);
+    try { localStorage.setItem('traitors-phase', n); } catch (e) {}
+
+    // Scroll to top of newly revealed phase
+    const target = document.querySelector(`.phase[data-phase="${n}"]`);
+    if (target && n > 1) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  document.querySelectorAll('nav button').forEach(btn => {
+    btn.addEventListener('click', () => showPhase(btn.dataset.phase));
+  });
+
+  // Initial phase: URL param > localStorage > 1
+  const urlPhase = new URLSearchParams(location.search).get('phase');
+  let stored = null;
+  try { stored = localStorage.getItem('traitors-phase'); } catch (e) {}
+  const initial = urlPhase || stored || '1';
+  showPhase(initial);
+</script>
+
+</body>
+</html>
