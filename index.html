@@ -211,21 +211,37 @@
     letter-spacing: 0.1em;
   }
 
-  /* Lock in button */
+  /* Lock in group */
+  .lock-in-group {
+    display: flex;
+    gap: 0.4rem;
+    margin-bottom: 0.5rem;
+  }
+  .lock-in-group input {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--fg);
+    padding: 0.5rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    text-align: center;
+    font-family: inherit;
+    letter-spacing: 0.2em;
+  }
   .lock-in-btn {
-    width: 100%;
     background: #16a34a;
     color: #fff;
     border: none;
-    padding: 0.6rem;
+    padding: 0.5rem 0.8rem;
     border-radius: 6px;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     font-weight: 700;
     cursor: pointer;
     font-family: inherit;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 0.5rem;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
   }
   .lock-in-btn:hover { background: #15803d; }
 
@@ -236,56 +252,8 @@
     border-color: #d4af37;
   }
 
-  /* PIN dialog */
-  #pin-dialog {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.85);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 30;
-  }
-  #pin-dialog .pin-box {
-    background: #1a1a1a;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 1.5rem;
-    text-align: center;
-    width: 260px;
-  }
-  #pin-dialog input {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    color: var(--fg);
-    padding: 0.6rem;
-    border-radius: 6px;
-    font-size: 1.2rem;
-    text-align: center;
-    width: 100%;
-    margin: 0.8rem 0;
-    font-family: inherit;
-    letter-spacing: 0.3em;
-  }
-  #pin-dialog button {
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    padding: 0.6rem 1.5rem;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    font-family: inherit;
-    font-weight: 600;
-  }
-  #pin-dialog .pin-error {
-    color: var(--accent);
-    font-size: 0.8rem;
-    margin-top: 0.5rem;
-  }
-
   @media print {
-    #admin-toggle, #admin-panel, #pin-dialog { display: none !important; }
+    #admin-toggle, #admin-panel { display: none !important; }
     body { padding-bottom: 1rem; max-width: 100%; color: #000; background: #fff; }
     .phase { background: #fff; border: 1px solid #ccc; break-inside: avoid; }
     .phase-gif { display: none !important; }
@@ -515,7 +483,7 @@
 <!-- Preview banner (shown when previewing a phase) -->
 <div id="preview-banner" class="preview-banner hidden">PREVIEWING PHASE <span id="preview-phase-num"></span> — not live yet</div>
 
-<!-- Admin panel (hidden until authenticated) -->
+<!-- Admin panel (hidden until ?admin) -->
 <div id="admin-panel" class="hidden">
   <h3>Admin — Select Phase</h3>
   <div class="phase-btns">
@@ -527,26 +495,17 @@
     <button onclick="previewPhase(6)">6</button>
     <button onclick="previewPhase(7)">7</button>
   </div>
-  <button id="lock-in-btn" class="lock-in-btn hidden" onclick="lockInPhase()">LOCK IN</button>
-  <div class="status" id="admin-status">Connected</div>
-</div>
-
-<!-- PIN dialog (shown on admin toggle click) -->
-<div id="pin-dialog" class="hidden">
-  <div class="pin-box">
-    <h3>Admin Access</h3>
+  <div id="lock-in-group" class="lock-in-group hidden">
     <input type="password" id="pin-input" placeholder="PIN" maxlength="10" inputmode="numeric">
-    <br>
-    <button onclick="checkPin()">Enter</button>
-    <div class="pin-error hidden" id="pin-error">Wrong PIN</div>
+    <button id="lock-in-btn" class="lock-in-btn" onclick="lockInPhase()">LOCK IN</button>
   </div>
+  <div class="status" id="admin-status">Connected</div>
 </div>
 
 <script>
   // ========== CONFIGURATION ==========
   // Replace this URL with your Val Town HTTP endpoint after deploying val.ts
   const VAL_URL = 'https://sanfordleach_ed09fbc4--f83491d6349311f1a60742b51c65c3df.web.val.run';
-  const ADMIN_PIN = '0808';
   const POLL_INTERVAL = 3000; // 3 seconds
 
   // ========== STATE ==========
@@ -562,7 +521,6 @@
   };
   let currentPhase = 1;   // the live phase (what players see)
   let previewingPhase = null; // phase being previewed locally (not yet live)
-  let isAdmin = false;
 
   // ========== DISPLAY ==========
   function showPhase(n) {
@@ -598,8 +556,8 @@
     document.getElementById('preview-banner').classList.remove('hidden');
     document.getElementById('preview-phase-num').textContent = n;
 
-    // Show lock-in button
-    document.getElementById('lock-in-btn').classList.remove('hidden');
+    // Show lock-in group
+    document.getElementById('lock-in-group').classList.remove('hidden');
 
     // Scroll to the previewed phase
     const target = document.querySelector(`.phase[data-phase="${n}"]`);
@@ -611,21 +569,30 @@
   function exitPreview() {
     previewingPhase = null;
     document.getElementById('preview-banner').classList.add('hidden');
-    document.getElementById('lock-in-btn').classList.add('hidden');
+    document.getElementById('lock-in-group').classList.add('hidden');
     showPhase(currentPhase);
   }
 
   async function lockInPhase() {
     if (!previewingPhase) return;
+    const pinInput = document.getElementById('pin-input');
+    const pin = pinInput.value;
+    if (!pin) {
+      document.getElementById('admin-status').textContent = 'Enter PIN to lock in';
+      pinInput.focus();
+      return;
+    }
+
     const n = previewingPhase;
-    previewingPhase = null;
-    document.getElementById('preview-banner').classList.add('hidden');
-    document.getElementById('lock-in-btn').classList.add('hidden');
 
     // Broadcast to Val Town
     if (VAL_URL.includes('%%')) {
+      previewingPhase = null;
+      document.getElementById('preview-banner').classList.add('hidden');
+      document.getElementById('lock-in-group').classList.add('hidden');
       currentPhase = n;
       showPhase(n);
+      pinInput.value = '';
       return;
     }
     const status = document.getElementById('admin-status');
@@ -634,20 +601,22 @@
       const res = await fetch(VAL_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ pin: ADMIN_PIN, phase: n })
+        body: JSON.stringify({ pin, phase: n })
       });
       const data = await res.json();
       if (data.phase) {
+        previewingPhase = null;
+        document.getElementById('preview-banner').classList.add('hidden');
+        document.getElementById('lock-in-group').classList.add('hidden');
         currentPhase = data.phase;
         showPhase(data.phase);
         status.textContent = `Phase ${data.phase} is LIVE ✓`;
+        pinInput.value = '';
       } else {
-        status.textContent = data.error || 'Error';
+        status.textContent = data.error === 'wrong pin' ? 'Wrong PIN' : (data.error || 'Error');
       }
     } catch (e) {
       status.textContent = 'Network error';
-      currentPhase = n;
-      showPhase(n);
     }
   }
 
@@ -671,47 +640,19 @@
     }
   }
 
-  // ========== ADMIN AUTH ==========
-  function checkPin() {
-    const input = document.getElementById('pin-input');
-    if (input.value === ADMIN_PIN) {
-      isAdmin = true;
-      document.getElementById('pin-dialog').classList.add('hidden');
-      document.getElementById('admin-panel').classList.remove('hidden');
-      document.getElementById('admin-toggle').textContent = '🔓';
-      input.value = '';
-    } else {
-      document.getElementById('pin-error').classList.remove('hidden');
-      input.value = '';
-      setTimeout(() => document.getElementById('pin-error').classList.add('hidden'), 2000);
-    }
-  }
-
-  document.getElementById('pin-input').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') checkPin();
-  });
-
-  // Show admin toggle if ?admin is in URL or triple-tap bottom-right
-  const showAdminToggle = new URLSearchParams(location.search).has('admin');
-  if (showAdminToggle) {
+  // ========== ADMIN TOGGLE ==========
+  // Show admin toggle if ?admin is in URL
+  if (new URLSearchParams(location.search).has('admin')) {
     document.getElementById('admin-toggle').classList.remove('hidden');
   }
 
   document.getElementById('admin-toggle').addEventListener('click', () => {
-    if (isAdmin) {
-      // Toggle panel visibility
-      document.getElementById('admin-panel').classList.toggle('hidden');
-    } else {
-      document.getElementById('pin-dialog').classList.remove('hidden');
-      document.getElementById('pin-input').focus();
-    }
+    document.getElementById('admin-panel').classList.toggle('hidden');
   });
 
-  // Close PIN dialog on background click
-  document.getElementById('pin-dialog').addEventListener('click', (e) => {
-    if (e.target === e.currentTarget) {
-      e.currentTarget.classList.add('hidden');
-    }
+  // Allow Enter key in PIN input to lock in
+  document.getElementById('pin-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') lockInPhase();
   });
 
   // ========== INIT ==========
