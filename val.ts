@@ -4,7 +4,7 @@
 
 import { blob } from "https://esm.town/v/std/blob";
 
-const ADMIN_PIN = "1234"; // Change this to your own secret PIN
+const ADMIN_PIN = "0808"; // Change this to your own secret PIN
 
 export default async function handler(req: Request): Promise<Response> {
   const headers = {
@@ -34,7 +34,7 @@ export default async function handler(req: Request): Promise<Response> {
         return Response.json({ error: "wrong pin" }, { status: 401, headers });
       }
 
-      const phase = Math.max(1, Math.min(6, body.phase));
+      const phase = Math.max(1, Math.min(7, body.phase));
       await blob.setJSON("traitors-phase", { phase });
       return Response.json({ phase }, { headers });
     } catch {
