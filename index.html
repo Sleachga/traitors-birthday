@@ -194,6 +194,48 @@
     text-align: center;
   }
 
+  /* Preview banner */
+  .preview-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #d4af37;
+    color: #000;
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.35rem;
+    z-index: 25;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* Lock in button */
+  .lock-in-btn {
+    width: 100%;
+    background: #16a34a;
+    color: #fff;
+    border: none;
+    padding: 0.6rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+  }
+  .lock-in-btn:hover { background: #15803d; }
+
+  /* Preview-mode highlight on selected phase button */
+  #admin-panel button.preview-phase {
+    background: #d4af37;
+    color: #000;
+    border-color: #d4af37;
+  }
+
   /* PIN dialog */
   #pin-dialog {
     position: fixed;
@@ -277,10 +319,15 @@
   <h2><span class="shield">🛡️</span> Labubus Are Shields</h2>
   <ul>
     <li>Winning a game earns you a <strong>Labubu shield</strong>.</li>
-    <li>Hold the Labubu to block ONE murder attempt — then it's gone.</li>
-    <li>One shield per game, per player.</li>
-    <li>Shields do <strong>NOT</strong> block roundtable banishment. You can still be voted out.</li>
-    <li>Team shields (Movie Challenge, Color Box) protect the <strong>whole winning team</strong> from the next murder phase.</li>
+    <li>Hold the Labubu to block ONE murder attempt — one use, then gone.</li>
+    <li>Shields last <strong>until the next challenge begins</strong>.</li>
+    <li>Shields do <strong>NOT</strong> block roundtable banishment — you can still be voted out.</li>
+  </ul>
+
+  <h3>Shield Types</h3>
+  <ul>
+    <li><strong>Individual Shield</strong> — protects only you. Earned from solo game wins (e.g. Hidden Diamonds).</li>
+    <li><strong>Team Shield</strong> — protects the <strong>whole winning team</strong> from the next murder phase. Earned from team game wins (Movie Challenge, Color Box).</li>
   </ul>
 
   <h2>📜 Rules of Engagement</h2>
@@ -304,8 +351,12 @@
     <li><strong>One diamond per hand</strong> — max 2 at a time.</li>
     <li>Stack them on <strong>your named coffin card</strong>.</li>
     <li>You must return to your coffin before grabbing more.</li>
+    <li>You may <strong>team up</strong> with other players to search together.</li>
     <li>Most diamonds wins a Labubu shield <span class="shield">🛡️</span>.</li>
   </ul>
+
+  <h3>Shield Extension</h3>
+  <p>The Hidden Diamonds winner may choose <strong>one additional player</strong> to protect with their shield. That player is also shielded from the next murder.</p>
 </section>
 
 <!-- ============================= PHASE 3 ============================= -->
@@ -316,15 +367,16 @@
   <h2>⚖️ How a Roundtable Works</h2>
   <ol>
     <li><strong>Discussion</strong> (~8 min): everyone sits at the roundtable. Accuse, defend, ask questions, build alliances. Be loud, be quiet, be sneaky — your call.</li>
-    <li><strong>Vote</strong>: the host calls for a vote. On the count of 3, everyone points simultaneously at the person they want to banish.</li>
+    <li><strong>Vote</strong>: one by one, each player names who they want to banish and <strong>explains why</strong>.</li>
     <li><strong>Reveal</strong>: majority is banished. The host reveals their role card dramatically.</li>
     <li>Banished player becomes a <strong>Ghost</strong>.</li>
   </ol>
 
   <h3>Voting Rules</h3>
   <ul>
-    <li>Simultaneous pointing — no abstaining, no changing your mind after the 3-count.</li>
-    <li>Ties → host picks a tiebreaker on the spot (coin flip, revote between tied players, etc.).</li>
+    <li>One-by-one voting — each player states their pick and gives a reason.</li>
+    <li>No abstaining.</li>
+    <li>Ties → <strong>Ghosts</strong> break the tie with their collective vote.</li>
     <li>You can vote for yourself. We don't recommend it.</li>
   </ul>
 </section>
@@ -338,21 +390,14 @@
 
   <h3>1. The Ghost Vote</h3>
   <ul>
-    <li>Each roundtable, ghosts meet privately and agree on ONE player to collectively vote for.</li>
-    <li>The host announces <em>"The ghosts have cast their vote — they chose ___"</em> before the living vote.</li>
-    <li>The ghost vote doesn't auto-banish anyone, but it heavily influences the living. Use it as propaganda.</li>
+    <li>Each roundtable, ghosts meet privately and agree on ONE anonymous group vote.</li>
+    <li>The vote is submitted to the <strong>host</strong> — the host decides what to do with it (announce it, keep it secret, use it as a tiebreaker, etc.).</li>
   </ul>
 
-  <h3>2. Return to Life</h3>
+  <h3>2. Play Games &amp; Award Shields</h3>
   <ul>
     <li>Ghosts can still play the 3 games.</li>
-    <li>If a Ghost is on a winning team, that ghost may <strong>swap places with a chosen living player</strong> — ghost comes back to life, living player becomes a ghost.</li>
-    <li>Your role stays the same as it was when you died.</li>
-  </ul>
-
-  <h3>3. Shield Nullification</h3>
-  <ul>
-    <li>If a ghost returns to life by targeting a shielded player, <strong>the shield is consumed</strong> and the swap still happens.</li>
+    <li>If a Ghost wins a game (or is on a winning team), the ghost <strong>chooses which living player</strong> receives the shield.</li>
   </ul>
 
   <h3>Ghost Etiquette</h3>
@@ -467,18 +512,22 @@
 <!-- Admin toggle button (small lock icon, bottom-right) -->
 <button id="admin-toggle" class="hidden">🔐</button>
 
+<!-- Preview banner (shown when previewing a phase) -->
+<div id="preview-banner" class="preview-banner hidden">PREVIEWING PHASE <span id="preview-phase-num"></span> — not live yet</div>
+
 <!-- Admin panel (hidden until authenticated) -->
 <div id="admin-panel" class="hidden">
-  <h3>Admin — Set Phase</h3>
+  <h3>Admin — Select Phase</h3>
   <div class="phase-btns">
-    <button onclick="setPhase(1)">1</button>
-    <button onclick="setPhase(2)">2</button>
-    <button onclick="setPhase(3)">3</button>
-    <button onclick="setPhase(4)">4</button>
-    <button onclick="setPhase(5)">5</button>
-    <button onclick="setPhase(6)">6</button>
-    <button onclick="setPhase(7)">7</button>
+    <button onclick="previewPhase(1)">1</button>
+    <button onclick="previewPhase(2)">2</button>
+    <button onclick="previewPhase(3)">3</button>
+    <button onclick="previewPhase(4)">4</button>
+    <button onclick="previewPhase(5)">5</button>
+    <button onclick="previewPhase(6)">6</button>
+    <button onclick="previewPhase(7)">7</button>
   </div>
+  <button id="lock-in-btn" class="lock-in-btn hidden" onclick="lockInPhase()">LOCK IN</button>
   <div class="status" id="admin-status">Connected</div>
 </div>
 
@@ -497,7 +546,7 @@
   // ========== CONFIGURATION ==========
   // Replace this URL with your Val Town HTTP endpoint after deploying val.ts
   const VAL_URL = 'https://sanfordleach_ed09fbc4--f83491d6349311f1a60742b51c65c3df.web.val.run';
-  const ADMIN_PIN = '7331';
+  const ADMIN_PIN = '0808';
   const POLL_INTERVAL = 3000; // 3 seconds
 
   // ========== STATE ==========
@@ -511,13 +560,13 @@
     6: 'Phase 6 · Color Box',
     7: 'Phase 7 · Endgame'
   };
-  let currentPhase = 1;
+  let currentPhase = 1;   // the live phase (what players see)
+  let previewingPhase = null; // phase being previewed locally (not yet live)
   let isAdmin = false;
 
   // ========== DISPLAY ==========
   function showPhase(n) {
     n = Math.max(1, Math.min(MAX_PHASE, parseInt(n, 10) || 1));
-    currentPhase = n;
 
     document.querySelectorAll('.phase').forEach(el => {
       const p = parseInt(el.dataset.phase, 10);
@@ -534,35 +583,53 @@
     // Update admin buttons
     document.querySelectorAll('#admin-panel .phase-btns button').forEach(btn => {
       const p = parseInt(btn.textContent, 10);
-      btn.classList.toggle('active-phase', p === n);
+      btn.classList.remove('active-phase', 'preview-phase');
+      if (p === currentPhase) btn.classList.add('active-phase');
+      if (previewingPhase && p === previewingPhase) btn.classList.add('preview-phase');
     });
   }
 
-  // ========== VAL TOWN POLLING ==========
-  async function fetchPhase() {
-    if (VAL_URL.includes('%%')) return; // Not configured yet
-    try {
-      const res = await fetch(VAL_URL);
-      const data = await res.json();
-      if (data.phase !== currentPhase) {
-        showPhase(data.phase);
-        // Scroll to newest phase
-        const target = document.querySelector(`.phase[data-phase="${data.phase}"]`);
-        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    } catch (e) {
-      console.warn('Phase fetch failed:', e);
-    }
+  // ========== PREVIEW ==========
+  function previewPhase(n) {
+    previewingPhase = n;
+    showPhase(n);
+
+    // Show preview banner
+    document.getElementById('preview-banner').classList.remove('hidden');
+    document.getElementById('preview-phase-num').textContent = n;
+
+    // Show lock-in button
+    document.getElementById('lock-in-btn').classList.remove('hidden');
+
+    // Scroll to the previewed phase
+    const target = document.querySelector(`.phase[data-phase="${n}"]`);
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    document.getElementById('admin-status').textContent = `Previewing phase ${n}`;
   }
 
-  async function setPhase(n) {
+  function exitPreview() {
+    previewingPhase = null;
+    document.getElementById('preview-banner').classList.add('hidden');
+    document.getElementById('lock-in-btn').classList.add('hidden');
+    showPhase(currentPhase);
+  }
+
+  async function lockInPhase() {
+    if (!previewingPhase) return;
+    const n = previewingPhase;
+    previewingPhase = null;
+    document.getElementById('preview-banner').classList.add('hidden');
+    document.getElementById('lock-in-btn').classList.add('hidden');
+
+    // Broadcast to Val Town
     if (VAL_URL.includes('%%')) {
-      // Fallback: local-only mode (no val configured)
+      currentPhase = n;
       showPhase(n);
       return;
     }
     const status = document.getElementById('admin-status');
-    status.textContent = 'Updating...';
+    status.textContent = 'Going live...';
     try {
       const res = await fetch(VAL_URL, {
         method: 'POST',
@@ -571,15 +638,36 @@
       });
       const data = await res.json();
       if (data.phase) {
+        currentPhase = data.phase;
         showPhase(data.phase);
-        status.textContent = `Phase ${data.phase} set ✓`;
+        status.textContent = `Phase ${data.phase} is LIVE ✓`;
       } else {
         status.textContent = data.error || 'Error';
       }
     } catch (e) {
       status.textContent = 'Network error';
-      // Fallback to local
+      currentPhase = n;
       showPhase(n);
+    }
+  }
+
+  // ========== VAL TOWN POLLING ==========
+  async function fetchPhase() {
+    if (VAL_URL.includes('%%')) return;
+    try {
+      const res = await fetch(VAL_URL);
+      const data = await res.json();
+      if (data.phase !== currentPhase) {
+        currentPhase = data.phase;
+        // Only update display if not currently previewing
+        if (!previewingPhase) {
+          showPhase(data.phase);
+          const target = document.querySelector(`.phase[data-phase="${data.phase}"]`);
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    } catch (e) {
+      console.warn('Phase fetch failed:', e);
     }
   }
 
@@ -627,6 +715,7 @@
   });
 
   // ========== INIT ==========
+  currentPhase = 1;
   showPhase(1);
   fetchPhase();
   setInterval(fetchPhase, POLL_INTERVAL);
